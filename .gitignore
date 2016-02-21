@@ -51,3 +51,16 @@ Carthage/Build
 
 fastlane/report.xml
 fastlane/screenshots
+
+
+####################################################
+# OSX Desktop Services Store
+.DS_Store
+
+# emacs backup filenames
+*~
+
+# XCode files associated with specific users
+**/xcuserdata
+
+

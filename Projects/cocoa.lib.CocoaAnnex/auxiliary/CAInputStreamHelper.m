@@ -6,9 +6,9 @@
 #import "CABaseException.h"
 #import "CAInputStreamHelper.h"
 #import "CALog.h"
+#import "CAOutputStreamHelper.h"
 #import "CAStreamHelper.h"
 
-#import "JBOutputStreamHelper.h"
 
 
 
@@ -132,7 +132,7 @@
         
         bytesRemaining -= bytesRead;
         
-        [JBOutputStreamHelper writeTo:outputStream buffer:buffer bufferLength:bytesRead];
+        [CAOutputStreamHelper writeTo:outputStream buffer:buffer bufferLength:bytesRead];
         
     }
 }

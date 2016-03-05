@@ -25,7 +25,6 @@
     NSArray* indexes = [tableDescriptor indexes];
     
     for( NSString* createIndex in indexes ) {
-        Log_debugString( createIndex );
         [connection exec:createIndex];
     }
     
@@ -38,7 +37,6 @@
         CATableDescriptor* tableDescriptor = tables[i];
   
         NSString* createTable = [self createTableDdl:tableDescriptor];
-        Log_debugString( createTable );
         
         [connection exec:createTable];
         

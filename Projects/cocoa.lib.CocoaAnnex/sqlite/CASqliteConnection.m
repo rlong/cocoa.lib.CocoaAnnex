@@ -51,8 +51,6 @@
 
 -(void)exec:(NSString*)statement {
     
-    Log_debugString( statement );
-    
     const char* utf8Statement = [statement UTF8String];
     
     int resultCode = sqlite3_exec(_connection, utf8Statement, NULL, NULL, NULL);

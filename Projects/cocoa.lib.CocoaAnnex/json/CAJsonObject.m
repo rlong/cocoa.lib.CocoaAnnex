@@ -11,7 +11,6 @@
 #import "CAJsonObjectHandler.h"
 #import "CAJsonDataInput.h"
 #import "CAJsonStringOutput.h"
-#import "CAObjectTracker.h"
 #import "CAStringHelper.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -632,7 +631,6 @@ static NSObject* _NULL_OBJECT = nil;
 	
 	CAJsonObject* answer = [super init];
 	
-	[CAObjectTracker allocated:answer];
 	
 	answer->_values = [[NSMutableDictionary alloc] init];
 	
@@ -643,7 +641,6 @@ static NSObject* _NULL_OBJECT = nil;
 	
 	CAJsonObject* answer = [super init];
 	
-	[CAObjectTracker allocated:answer];
 	
 	answer->_values = [[NSMutableDictionary alloc] initWithCapacity:numItems];
 	
@@ -653,7 +650,6 @@ static NSObject* _NULL_OBJECT = nil;
 
 -(void)dealloc {
 	
-	[CAObjectTracker deallocated:self];
 	
 	[self setValues:nil];
     

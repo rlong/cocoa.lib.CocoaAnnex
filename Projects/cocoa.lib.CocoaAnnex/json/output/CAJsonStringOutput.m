@@ -4,7 +4,6 @@
 //
 
 #import "CAJsonStringOutput.h"
-#import "CAObjectTracker.h"
 
 
 
@@ -56,7 +55,6 @@
 	
 	CAJsonStringOutput* answer = [super init];
 	
-	[CAObjectTracker allocated:answer];
 	
 	answer->_stringBuffer = [[NSMutableString alloc] init];
 	
@@ -66,7 +64,6 @@
 
 -(void)dealloc {
 	
-	[CAObjectTracker deallocated:self];
 	
 	[self setStringBuffer:nil];
 	 

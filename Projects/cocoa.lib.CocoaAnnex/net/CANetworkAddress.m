@@ -9,7 +9,6 @@
 #import "CAJsonObject.h"
 #import "CANetworkAddress.h"
 #import "CANetworkHost.h"
-#import "CAObjectTracker.h"
 
 #import "CALog.h"
 
@@ -86,8 +85,6 @@
 	CANetworkAddress* answer = [super init];
 	
 	
-	[CAObjectTracker allocated:answer];
-	
     answer->_networkHost = [[CANetworkHost alloc] init];
 	
 	return answer;
@@ -98,7 +95,6 @@
 
 	CANetworkAddress* answer = [super init];	
 	
-	[CAObjectTracker allocated:answer];
 	
     answer->_networkHost = [[CANetworkHost alloc] init];
     [[answer ipAddress] setIp4AddressWithString:ip4Address];
@@ -111,7 +107,6 @@
     
 	CANetworkAddress* answer = [super initWithJsonObject:network_address];
 	
-	[CAObjectTracker allocated:answer];
 	
     CAJsonObject* network_host = [network_address jsonObjectForKey:@"network_host"];
     answer->_networkHost = [[CANetworkHost alloc] initWithJsonObject:network_host];
@@ -124,7 +119,6 @@
 
 -(void)dealloc {
 	
-	[CAObjectTracker deallocated:self];
 	
     [self setNetworkHost:nil];
     [self setExtension:nil];

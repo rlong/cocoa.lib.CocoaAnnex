@@ -17,7 +17,6 @@
 #import "CAJsonDataInput.h"
 #import "CAJsonStringHandler.h"
 #import "CAJsonStringOutput.h"
-#import "CAObjectTracker.h"
 
 
 
@@ -144,15 +143,13 @@
 	
 	CAJsonHandler* answer = [super init];
 	
-	[CAObjectTracker allocated:answer];
 	
 	return answer;
 	
 }
 
 -(void)dealloc { 
-	
-	[CAObjectTracker deallocated:self];
+
 }
 
 

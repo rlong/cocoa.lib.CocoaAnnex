@@ -11,7 +11,6 @@
 #import "CAJsonArrayHandler.h"
 #import "CAJsonObject.h"
 #import "CAJsonStringOutput.h"
-#import "CAObjectTracker.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -375,7 +374,6 @@ static NSObject* _NULL_OBJECT = nil;
 	
 	CAJsonArray* answer = [super init];
 	
-	[CAObjectTracker allocated:answer];
     
     if( nil != answer ) {
         
@@ -390,7 +388,6 @@ static NSObject* _NULL_OBJECT = nil;
 	
 	CAJsonArray* answer = [super init];
 	
-	[CAObjectTracker allocated:answer];
 
     if( nil != answer ) {
         
@@ -405,7 +402,6 @@ static NSObject* _NULL_OBJECT = nil;
 
 -(void)dealloc {
 	
-	[CAObjectTracker deallocated:self];
 	
 	[self setValues:nil];
 	

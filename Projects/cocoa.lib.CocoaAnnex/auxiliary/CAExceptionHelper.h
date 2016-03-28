@@ -6,11 +6,12 @@
 #import <Foundation/Foundation.h>
 
 #import "JBJsonArray.h"
+@class CAJsonArray;
 
 @interface CAExceptionHelper : NSObject
 
 
-+(JBJsonArray*)getStackTrace:(NSException*)e;
++(CAJsonArray*)getStackTrace:(NSException*)e;
 
 +(NSString*)getAtosCommand:(NSException*)e;
 

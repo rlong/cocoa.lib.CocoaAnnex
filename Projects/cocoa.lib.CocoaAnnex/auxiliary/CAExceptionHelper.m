@@ -5,6 +5,7 @@
 
 #import "CABaseException.h"
 #import "CAExceptionHelper.h"
+#import "CAJsonArray.h"
 
 @implementation CAExceptionHelper
 
@@ -30,13 +31,13 @@
     
 }
 
-+(JBJsonArray*)getStackTrace:(NSException*)e {
++(CAJsonArray*)getStackTrace:(NSException*)e {
     
     e = [self getRootCause:e];
 
     
     NSArray* callStackSymbols = [e callStackSymbols];
-    JBJsonArray* answer = [[JBJsonArray alloc] initWithCapacity:[callStackSymbols count]];
+    CAJsonArray* answer = [[CAJsonArray alloc] initWithCapacity:[callStackSymbols count]];
     
     for( NSString* callStackSymbol in callStackSymbols ) {
         NSString* trimmedCallStackSymbol = [callStackSymbol stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

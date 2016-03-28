@@ -11,10 +11,36 @@
 
 
 #import "CALog.h"
-
+#import "CALogConsumer.h"
 
 @implementation CALog
 
+
+
+static id <CALogConsumer> _logConsumer;
+
+
++(void)setLogConsumer:(id <CALogConsumer>)logConsumer forCaller:(const char *)caller{
+    
+    
+    NSString* logMessage = [NSString stringWithFormat:@"caller = %s", caller];
+    
+    if( nil != _logConsumer ) {
+        [_logConsumer logMessage:logMessage forFunction:__func__ atLevel:@"INF"];
+    }
+    
+    _logConsumer = logConsumer;
+    
+    if( nil != _logConsumer ) {
+        [_logConsumer logMessage:logMessage forFunction:__func__ atLevel:@"INF"];
+    }
+    
+}
+
+
++(id <CALogConsumer>)getLogConsumer {
+    return _logConsumer;
+}
 
 
 +(void)logMessage:(NSString*)message forFunction:(const char *)function atLevel:(NSString*)level {

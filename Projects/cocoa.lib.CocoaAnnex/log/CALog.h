@@ -12,9 +12,13 @@
 #import <Foundation/Foundation.h>
 
 
+@protocol CALogConsumer;
+
 @interface CALog : NSObject  {
 }
 
++(void)setLogConsumer:(id <CALogConsumer>)logConsumer forCaller:(const char *)caller;
++(id <CALogConsumer>)getLogConsumer;
 
 
 #pragma mark -

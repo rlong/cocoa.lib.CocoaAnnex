@@ -38,6 +38,8 @@
   
         NSString* createTable = [self createTableDdl:tableDescriptor];
         
+//        Log_debugString( createTable );
+        
         [connection exec:createTable];
         
     }

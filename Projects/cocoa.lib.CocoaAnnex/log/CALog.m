@@ -1,8 +1,13 @@
+//  https://github.com/rlong/cocoa.lib.CocoaAnnex
+//
 //  Copyright (c) 2015 Richard Long
 //
 //  Released under the MIT license ( http://opensource.org/licenses/MIT )
 //
-// vvv derived from https://github.com/rlong/jsonbroker.objective_c/blob/master/src/jsonbroker.library/common/log/JBLog.m
+
+//
+// vvv derived from https://github.com/rlong/jsonbroker.objective_c/blob/master/src/jsonbroker.library/common/log/JBLog.h
+//
 
 
 #import "CALog.h"
@@ -562,7 +567,8 @@
 }
 
 
-+ (void)warnString:(NSString *)value withName:(const char*)name inFunction:(const char*)function {
++ (void)warnString:(NSString *)value withName:(const char*)name inFunction:(const char*)function;
+{
     
     NSString *message;
     
@@ -578,6 +584,25 @@
     [self warn:message inFunction:function];
     
 }
+
+
++ (void)warnUtf8String:(const char*)value withName:(const char *)name inFunction:(const char*)function;
+{
+    
+    NSString *message;
+    if( nil == value )
+    {
+        message  = [NSString stringWithFormat : @"%s = NULL" , name];
+    }
+    else
+    {
+        message  = [NSString stringWithFormat : @"%s = '%s'" , name, value];
+    }
+    
+    [self debug:message inFunction:function];
+    
+}
+
 
 
 +(void)warnInFunction:(const char*)function format:(NSString*)format, ... {

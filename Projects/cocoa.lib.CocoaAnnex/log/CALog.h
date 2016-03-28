@@ -1,8 +1,13 @@
-//  Copyright (c) 2015 Richard Long 
+//  https://github.com/rlong/cocoa.lib.CocoaAnnex
+//
+//  Copyright (c) 2015 Richard Long
 //
 //  Released under the MIT license ( http://opensource.org/licenses/MIT )
 //
+
+//
 // vvv derived from https://github.com/rlong/jsonbroker.objective_c/blob/master/src/jsonbroker.library/common/log/JBLog.h
+//
 
 #import <Foundation/Foundation.h>
 
@@ -226,6 +231,10 @@
 
 + (void)warnString:(NSString *)value withName:(const char*)name inFunction:(const char*)function;
 #define Log_warnString(value) [CALog warnString:value withName:#value inFunction:__func__]
+
++ (void)warnUtf8String:(const char*)value withName:(const char *)name inFunction:(const char*)function;
+#define Log_warnUtf8String(value) [CALog warnUtf8String:value withName:#value inFunction:__func__]
+
 
 +(void)warnInFunction:(const char*)function format:(NSString *)format, ...;
 #define Log_warnFormat( ... ) [CALog warnInFunction:__func__ format:__VA_ARGS__]

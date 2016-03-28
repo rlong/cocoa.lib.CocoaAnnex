@@ -15,6 +15,12 @@
 
 @implementation CASqliteConnection
 
++ (void)initialize {
+
+    Log_debugInt( sqlite3_threadsafe() );
+    
+}
+
 -(void)begin {
     
     // vvv http://stackoverflow.com/questions/416924/sqlite-3-c-api-transactions

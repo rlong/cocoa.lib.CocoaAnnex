@@ -7,7 +7,8 @@
 //
 
 // #import "NodeTree-Swift.h"
-#import "VLC_Pal-Swift.h"
+// #import "VLC_Pal-Swift.h"
+#import "Mc_Remote-Swift.h"
 
 #import "CALog.h"
 

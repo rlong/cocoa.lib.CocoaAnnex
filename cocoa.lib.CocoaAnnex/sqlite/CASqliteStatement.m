@@ -6,15 +6,10 @@
 //
 //
 
-// #import "NodeTree-Swift.h"
-// #import "VLC_Pal-Swift.h"
-#import "Mc_Remote-Swift.h"
 
 #import "CALog.h"
 
 #import "JBBaseException.h"
-#import "ErrorBuilder.h"
-#import "ErrorBuilder.h"
 
 #import "CASqliteStatement.h"
 #import "CASqliteUtilities.h"
@@ -155,8 +150,8 @@
     
     if( SQLITE_INTEGER != columnType ) {
         
-        *error = ErrorBuilder_errorForFailure( @"SQLITE_INTEGER != columnType" );
-        return false;
+        NSString* technicalError = [NSString stringWithFormat:@"SQLITE_INTEGER != columnType; columnIndex = %d; columnType = %d", columnIndex, columnType];
+        @throw [JBBaseException baseExceptionWithOriginator:self line:__LINE__ faultString:technicalError];
         
     }
     
@@ -177,8 +172,8 @@
     
     if( SQLITE_INTEGER != columnType ) {
         
-        *error = ErrorBuilder_errorForFailure( @"SQLITE_INTEGER != columnType" );
-        return false;
+        NSString* technicalError = [NSString stringWithFormat:@"SQLITE_INTEGER != columnType; columnIndex = %d; columnType = %d", columnIndex, columnType];
+        @throw [JBBaseException baseExceptionWithOriginator:self line:__LINE__ faultString:technicalError];
         
     }
     

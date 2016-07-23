@@ -39,7 +39,7 @@
     
     if( nil != error ) {
         
-        BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ callTo:@"[ NSFileManager attributesOfItemAtPath:error:]" failedWithError:error];
+        CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ callTo:@"[ NSFileManager attributesOfItemAtPath:error:]" failedWithError:error];
         @throw  e;
         
     }
@@ -87,7 +87,7 @@
             technicalError = [NSString stringWithFormat:@"failed to moving '%@' to '%@'", srcPath, dstPath];
         }
         
-        BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+        CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
         
         if( nil != error )  {
             [e setError:error];
@@ -155,7 +155,7 @@
             technicalError = [NSString stringWithFormat:@"failed to write to '%@'", path];
         }
         
-        BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+        CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
         
         if( nil != error )  {
             [e setError:error];

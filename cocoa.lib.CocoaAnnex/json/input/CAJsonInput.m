@@ -34,18 +34,18 @@
 
 -(BOOL)hasNextByte {
     
-    BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:@"unimplmeneted"];
+    CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:@"unimplmeneted"];
     @throw e;
     
 }
 -(UInt8)currentByte {
-    BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:@"unimplmeneted"];
+    CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:@"unimplmeneted"];
     @throw e;
 
 }
 
 -(UInt8)nextByte {
-    BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:@"unimplmeneted"];
+    CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:@"unimplmeneted"];
     @throw e;
 
 }

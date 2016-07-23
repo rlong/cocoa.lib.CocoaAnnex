@@ -5,7 +5,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "JBJsonArray.h"
 @class CAJsonArray;
 
 @interface CAExceptionHelper : NSObject

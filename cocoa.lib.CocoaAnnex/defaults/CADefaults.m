@@ -6,8 +6,9 @@
 
 #import "CALog.h"
 #import "CADefaults.h"
+#import "CAJsonObject.h"
+#import "CAJsonObjectHelper.h"
 
-#import "JBJsonObjectHelper.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,8 +18,8 @@
 @interface CADefaults ()
 
 // environment
-//JBJsonObject* _environment;
-@property (nonatomic, retain) JBJsonObject* environment;
+//CAJsonObject* _environment;
+@property (nonatomic, retain) CAJsonObject* environment;
 //@synthesize environment = _environment;
 
 @end
@@ -49,7 +50,7 @@
     
 }
 
--(JBJsonObject*)jsonObjectWithName:(NSString*)name defaultValue:(JBJsonObject*)defaultValue {
+-(CAJsonObject*)jsonObjectWithName:(NSString*)name defaultValue:(CAJsonObject*)defaultValue {
     
     return [_environment jsonObjectForKey:name defaultValue:defaultValue];
 
@@ -74,7 +75,7 @@
         
         if( nil != environmentValue ) {
             Log_debugString( environmentValue );
-            JBJsonObject* environment = [JBJsonObjectHelper buildFromString:environmentValue];
+            CAJsonObject* environment = [CAJsonObjectHelper buildFromString:environmentValue];
             CADefaults* answer = [[CADefaults alloc] initWithEnvironment:environment];
             return answer;
             
@@ -89,7 +90,7 @@
         
         if( nil != bundleValue ) {
             Log_debugString( bundleValue );
-            JBJsonObject* environment = [JBJsonObjectHelper buildFromString:bundleValue];
+            CAJsonObject* environment = [CAJsonObjectHelper buildFromString:bundleValue];
             CADefaults* answer = [[CADefaults alloc] initWithEnvironment:environment];
             return answer;
             
@@ -99,7 +100,7 @@
     // empty ...
     
     
-    JBJsonObject* environment = [[JBJsonObject alloc] init];
+    CAJsonObject* environment = [[CAJsonObject alloc] init];
     
     CADefaults* answer = [[CADefaults alloc] initWithEnvironment:environment];
     
@@ -112,7 +113,7 @@
 #pragma mark instance lifecycle
 
 
--(id)initWithEnvironment:(JBJsonObject*) environment {
+-(id)initWithEnvironment:(CAJsonObject*) environment {
     
     CADefaults* answer  = [super init];
     
@@ -143,10 +144,10 @@
         Log_debugString( environmentVariable );
         
         if( nil == environmentVariable ) {
-            answer->_environment = [[JBJsonObject alloc] init];
+            answer->_environment = [[CAJsonObject alloc] init];
         } else {
 
-            JBJsonObject* environment = [JBJsonObjectHelper buildFromString:environmentVariable];
+            CAJsonObject* environment = [CAJsonObjectHelper buildFromString:environmentVariable];
             [answer setEnvironment:environment];
         }
         
@@ -167,8 +168,8 @@
 #pragma mark fields
 
 // environment
-//JBJsonObject* _environment;
-//@property (nonatomic, retain) JBJsonObject* environment;
+//CAJsonObject* _environment;
+//@property (nonatomic, retain) CAJsonObject* environment;
 @synthesize environment = _environment;
 
 

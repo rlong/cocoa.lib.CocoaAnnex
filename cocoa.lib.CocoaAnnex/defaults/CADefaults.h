@@ -6,7 +6,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "JBJsonObject.h"
+
+@class CAJsonObject;
 
 
 /* simply uses environment variables */
@@ -14,7 +15,7 @@
     
     
     // environment
-    JBJsonObject* _environment;
+    CAJsonObject* _environment;
     //@property (nonatomic, retain) JBJsonObject* environment;
     //@synthesize environment = _environment;
 
@@ -29,7 +30,7 @@
 
 -(int)intWithName:(NSString*)name defaultValue:(int)defaultValue;
 
--(JBJsonObject*)jsonObjectWithName:(NSString*)name defaultValue:(JBJsonObject*)defaultValue;
+-(CAJsonObject*)jsonObjectWithName:(NSString*)name defaultValue:(CAJsonObject*)defaultValue;
 
 +(CADefaults*)getDefaultsForScope:(NSString*)scope;
 
@@ -37,7 +38,7 @@
 #pragma mark -
 #pragma mark instance lifecycle
 
--(id)initWithEnvironment:(JBJsonObject*) environment;
+-(id)initWithEnvironment:(CAJsonObject*) environment;
 //-(id)initWithScope:(NSString*)scope;
 
 @end

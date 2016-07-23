@@ -86,7 +86,7 @@
 			} 
 			// otherwise we throw an exception ...
 			NSString* technicalError = [NSString stringWithFormat:@"SecItemCopyMatching call failed for account '%@' for service '%@' (%ld == status)", account, service, longStatus];
-			BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+			CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
 			[e addIntContext:longStatus withName:@"longStatus"];
 			
 			@throw e;
@@ -94,7 +94,7 @@
 		
 		if( nil == passwordData ) { // can this happen if (errSecSuccess == status) ?
 			NSString* technicalError = [NSString stringWithFormat:@"got unexpected response from SecItemCopyMatching call (nil == passwordData). account = '%@', service = '%@'", account, service];
-			BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+			CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
 			[e addIntContext:longStatus withName:@"longStatus"];
 			
 			@throw e;
@@ -148,7 +148,7 @@
 			} 
 			// otherwise we throw an exception ...
 			NSString* technicalError = [NSString stringWithFormat:@"SecItemCopyMatching call failed for account; status = %ld", longStatus];
-			BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+			CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
 			[e addIntContext:longStatus withName:@"longStatus"];
 			
 			@throw e;
@@ -156,7 +156,7 @@
         
         if( nil == passwordData ) { // can this happen if (errSecSuccess == status) ?
 			NSString* technicalError = @"nil == passwordData";
-			BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+			CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
 			[e addIntContext:longStatus withName:@"longStatus"];
 			
 			@throw e;
@@ -231,7 +231,7 @@
             Class clazz = [secAttrAccount class];
             NSString* technicalError = [NSString stringWithFormat:@"unsupported type; NSStringFromClass(clazz) = %@", NSStringFromClass(clazz)];
             
-            BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+            CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
             @throw  e;
         }
         // ^^^ documentation says 'secAttrAccount' should be a CFStringRef (i.e. NSString), but finding in simulator on OSX 10.8.5 that 'secAttrAccount' is a NSData
@@ -333,7 +333,7 @@
             @try {
                 [self removePasswordForUsername:username atService:service];
             }
-            @catch (BaseException *exception) {
+            @catch (CABaseException *exception) {
                 Log_errorException(exception);
             }
             
@@ -343,7 +343,7 @@
                 
                 if( throwExceptionOnFail ) {
                     
-                    BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+                    CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
                     
                     @throw e;
                     
@@ -389,7 +389,7 @@
 		} 
 		// otherwise we throw an exception ...
 		NSString* technicalError = [NSString stringWithFormat:@"SecItemDelete call failed for user '%@' for service '%@' (%ld == longStatus)", username, service, longStatus];
-		BaseException* e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+		CABaseException* e = [[CABaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
 		[e addIntContext:longStatus withName:@"longStatus"];
 		
 		@throw e;

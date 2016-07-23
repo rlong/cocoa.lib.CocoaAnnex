@@ -6,13 +6,12 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "JBBaseException.h"
-#import "JBFileUtilities.h"
-#import "JBFolderUtilities.h"
-#import "JBLog.h"
-#import "JBMemoryModel.h"
-
+#import "CABaseException.h"
 #import "CAFile.h"
+#import "CAFileUtilities.h"
+#import "CAFolderUtilities.h"
+#import "CALog.h"
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -198,11 +197,9 @@ static NSData* _emptyFile = nil;
     [self setFileName:nil];
     
     if( nil != _lowercaseFileName ) {
-        JBRelease( _lowercaseFileName );
         _lowercaseFileName = nil;
     }
     
-    JBSuperDealloc();
     
 }
 
@@ -338,7 +335,7 @@ static NSData* _emptyFile = nil;
 
 -(BOOL)mkdirs {
     
-    [JBFolderUtilities mkdirs:_pathname];
+    [CAFolderUtilities mkdirs:_pathname];
 
     return true;
     
@@ -346,13 +343,13 @@ static NSData* _emptyFile = nil;
 
 -(BOOL)isDirectory { 
     
-    return [JBFolderUtilities directoryExistsAtPath:_pathname];
+    return [CAFolderUtilities directoryExistsAtPath:_pathname];
     
 }
 
 -(BOOL)isFile {
     
-    return [JBFileUtilities isFile:_pathname];
+    return [CAFileUtilities isFile:_pathname];
     
 }
 
@@ -406,7 +403,7 @@ static NSData* _emptyFile = nil;
 
 -(long long)length {
     
-    return [JBFileUtilities getFileLength:_pathname];
+    return [CAFileUtilities getFileLength:_pathname];
 
     
 }
@@ -463,7 +460,6 @@ static NSData* _emptyFile = nil;
     
     NSString* filename = [self getName];
     _lowercaseFileName = [filename lowercaseString];
-    JBRetain( _lowercaseFileName );
     
     return _lowercaseFileName;
     

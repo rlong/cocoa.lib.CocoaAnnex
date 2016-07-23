@@ -160,26 +160,6 @@ const char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a'
 +(NSString*)unescapeHtmlCodes:(NSString*)input {
     
     
-    
-    
-#if defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
-    
-    if( NO ) {
-        // OSX ...
-        Log_debug(@"OSX");
-        
-        // vvv http://stackoverflow.com/questions/1067652/converting-amp-to-in-objective-c
-        
-        CFStringRef escapedAnswer = (CFStringRef)input;
-        CFStringRef unescapedAnswer = CFXMLCreateStringByUnescapingEntities(kCFAllocatorDefault, escapedAnswer, NULL);
-        return (NSString*)[NSMakeCollectable(unescapedAnswer) autorelease];
-        
-        // ^^^ http://stackoverflow.com/questions/1067652/converting-amp-to-in-objective-c
-    }
-    
-#endif
-    
-    
     NSRange rangeOfHTMLEntity = [input rangeOfString:@"&#"];
     if( NSNotFound == rangeOfHTMLEntity.location ) {
         return input;

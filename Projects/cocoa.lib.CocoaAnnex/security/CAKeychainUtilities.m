@@ -38,7 +38,7 @@
 	
 	// OSX ... 
     Log_debug(@"OSX: using 'kSecClassInternetPassword'");
-    NSString* secClassInternetPassword = (NSString *)secClassInternetPassword;
+    NSString* secClassInternetPassword = (NSString *)kSecClassGenericPassword;
 	[query setObject:secClassInternetPassword forKey:(NSString *)kSecClass];
     
 #else

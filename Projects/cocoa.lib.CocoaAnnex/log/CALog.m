@@ -38,7 +38,8 @@ static id <CALogConsumer> _logConsumer;
 }
 
 
-+(id <CALogConsumer>)getLogConsumer {
++(id <CALogConsumer>)getLogConsumer;
+{
     return _logConsumer;
 }
 
@@ -50,8 +51,9 @@ static id <CALogConsumer> _logConsumer;
     
 #ifdef DEBUG // see GCC_PREPROCESSOR_DEFINITIONS in the build settings
     
-    NSString* line = [NSString stringWithFormat:@"%@ %@ %s %@" , level, currentThreadName, function, message];
-    printf( "%s\n", [line UTF8String] );
+//    NSString* line = [NSString stringWithFormat:@"%@ %@ %s %@" , level, currentThreadName, function, message];
+//    printf( "%s\n", [line UTF8String] );
+    NSLog( @"%@ %@ %s %@" , level, currentThreadName, function, message  );
     
 #else
     

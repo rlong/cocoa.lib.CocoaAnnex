@@ -79,6 +79,8 @@ static CAJsonArrayHandler* _jsonArrayHandler = nil;
     
     NSData* answer;
     
+    
+    
     CAJsonStringOutput* writer = [[CAJsonStringOutput alloc] init];
     
     @try {

@@ -7,15 +7,11 @@
 
 @class CAJsonObject;
 
-@interface CAJsonArray : NSObject {
-	
+@interface CAJsonArray : NSObject {}
 
-	NSMutableArray* _values;
-	//@property (nonatomic, retain) NSMutableArray* values;
-	//@synthesize values = _values;
-	
 
-}
+@property (nonatomic, strong) NSMutableArray* values;
+
 
 +(NSString*)NULL_VALUE_REFERENCED;
 
@@ -66,6 +62,7 @@
 #pragma mark instance lifecycle
 
 -(id)initWithCapacity:(long)capacity;
-	
+-(instancetype)initWithValue:(NSMutableArray*)values;
+
 
 @end

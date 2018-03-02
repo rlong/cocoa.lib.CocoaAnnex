@@ -18,9 +18,8 @@
 
 @interface CAJsonArray () 
 
-//NSMutableArray* _values;
-@property (nonatomic, retain) NSMutableArray* values;
-//@synthesize values = _values;
+
+
 
 @end 
 
@@ -29,7 +28,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 
-@implementation CAJsonArray
+@implementation CAJsonArray {
+    
+    NSMutableDictionary* _wrappedValues;
+}
 
 
 static NSObject* _NULL_OBJECT = nil;
@@ -46,6 +48,68 @@ static NSObject* _NULL_OBJECT = nil;
 	_NULL_OBJECT = [NSNull null];
     
 }
+
+
+
+#pragma mark instance lifecycle
+
+-(instancetype)init {
+    
+    self = [super init];
+    
+    
+    if( nil != self ) {
+        
+        self->_values = [[NSMutableArray alloc] init];
+        _wrappedValues = [[NSMutableDictionary alloc] init];
+
+        
+    }
+    
+    return self;
+}
+
+-(instancetype)initWithCapacity:(long)capacity {
+    
+    self = [super init];
+    
+    
+    if( nil != self ) {
+        
+        self->_values = [[NSMutableArray alloc] initWithCapacity:capacity];
+        _wrappedValues = [[NSMutableDictionary alloc] init];
+
+    }
+    
+    return self;
+    
+}
+
+
+-(instancetype)initWithValue:(NSMutableArray*)values;
+{
+    
+    self = [super init];
+    
+    if( self ) {
+        self->_values = values;
+        _wrappedValues = [[NSMutableDictionary alloc] init];
+    }
+    
+    return self;
+}
+
+
+
+-(void)dealloc {
+    
+    
+    [self setValues:nil];
+    _wrappedValues = nil;
+    
+}
+
+#pragma mark -
 
 
 
@@ -80,7 +144,29 @@ static NSObject* _NULL_OBJECT = nil;
 		return;
 	}
 	
-	[_values addObject:object];
+    if( [object isKindOfClass:[CAJsonObject class]] ) {
+        
+        CAJsonObject* jsonObject = (CAJsonObject*)object;
+        [_values addObject:[jsonObject values]];
+        
+        NSUInteger index = [_values count]-1;
+        NSNumber* key = [NSNumber numberWithUnsignedInteger:index];
+        [_wrappedValues setObject:jsonObject forKey:key];
+    } else if( [object isKindOfClass:[CAJsonArray class]] ) {
+        
+        CAJsonArray* jsonArray = (CAJsonArray*)object;
+        [_values addObject:[jsonArray values]];
+
+        NSUInteger index = [_values count]-1;
+        NSNumber* key = [NSNumber numberWithUnsignedInteger:index];
+        [_wrappedValues setObject:jsonArray forKey:key];
+        
+    } else {
+        
+        [_values addObject:object];
+//        [_values setObject:object forKey:key];
+    }
+
 	
 }
 
@@ -205,34 +291,52 @@ static NSObject* _NULL_OBJECT = nil;
 	
 	
     id blob = [self getBlobAtIndex:index throwExceptionOnNil:true];
-	
-	
-	if( ![blob isKindOfClass:[CAJsonArray class]] ) { 
-		
-        NSString* technicalError = [NSString stringWithFormat:@"![blob isKindOfClass:[JSONArray class]]; NSStringFromClass([blob class]) = %@", NSStringFromClass([blob class])];
-		BaseException *e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
-		@throw e;
 
-	}
-	
-	CAJsonArray* answer = (CAJsonArray*)blob;
-	return answer;
+    
+    if( ![blob isKindOfClass:[NSMutableArray class]] ) {
+        NSString* technicalError = [NSString stringWithFormat:@"![blob isKindOfClass:[NSMutableArray class]]; NSStringFromClass([blob class]) = %@", NSStringFromClass([blob class])];
+        
+        BaseException *e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+        @throw e;
+    }
+
+    NSNumber* key = [NSNumber numberWithUnsignedInteger:index];
+    CAJsonArray* answer = [_wrappedValues objectForKey:key];
+    if( nil == answer ) {
+        
+        NSMutableArray* mutableArray = (NSMutableArray*)blob;
+        answer = [[CAJsonArray alloc] initWithValue:mutableArray];
+        [_wrappedValues setObject:answer forKey:key];
+    }
+    
+    return answer;
 }
 
 -(CAJsonObject*)jsonObjectAtIndex:(NSUInteger)index {
 	
     id blob = [self getBlobAtIndex:index throwExceptionOnNil:true];
-	
-	if( ![blob isKindOfClass:[CAJsonObject class]] ) { 
-		
-        NSString* technicalError = [NSString stringWithFormat:@"![blob isKindOfClass:[JSONObject class]]; NSStringFromClass([blob class]) = %@", NSStringFromClass([blob class])];
-		BaseException *e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
-		@throw e;
+    
 
-	}
-	
-	CAJsonObject* answer = (CAJsonObject*)blob;
-	return answer;
+    if( ![blob isKindOfClass:[NSMutableDictionary class]] ) {
+        
+        NSString* technicalError = [NSString stringWithFormat:@"![blob isKindOfClass:[NSMutableDictionary class]]; NSStringFromClass([blob class]) = %@", NSStringFromClass([blob class])];
+        
+        BaseException *e = [[BaseException alloc] initWithOriginator:self line:__LINE__ faultMessage:technicalError];
+        @throw e;
+        
+    }
+
+    NSNumber* key = [NSNumber numberWithUnsignedInteger:index];
+    CAJsonObject* answer = [_wrappedValues objectForKey:key];
+    if( nil == answer ) {
+        
+        NSMutableDictionary* mutableArray = (NSMutableDictionary*)blob;
+        answer = [[CAJsonObject alloc] initWithValue:mutableArray];
+        [_wrappedValues setObject:answer forKey:key];
+    }
+    
+    return answer;
+
 }
 
 -(NSNumber*)numberAtIndex:(NSUInteger)index {
@@ -313,6 +417,7 @@ static NSObject* _NULL_OBJECT = nil;
 
 
 -(int)length {
+    
 	return (int)[_values count];
     
 }
@@ -367,45 +472,6 @@ static NSObject* _NULL_OBJECT = nil;
 }
 
 
-
-#pragma mark instance lifecycle
-
--(id)init {
-	
-	CAJsonArray* answer = [super init];
-	
-    
-    if( nil != answer ) {
-        
-        answer->_values = [[NSMutableArray alloc] init];
-        
-    }
-	
-	return answer;
-}
-
--(id)initWithCapacity:(long)capacity { 
-	
-	CAJsonArray* answer = [super init];
-	
-
-    if( nil != answer ) {
-        
-        answer->_values = [[NSMutableArray alloc] initWithCapacity:capacity];
-        
-    }
-	
-	return answer;
-	
-}
-
-
--(void)dealloc {
-	
-	
-	[self setValues:nil];
-	
-}
 
 
 //NSMutableArray* _values;

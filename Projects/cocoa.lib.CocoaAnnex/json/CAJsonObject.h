@@ -8,14 +8,11 @@
 #import "CAJsonArray.h"
 
 
-@interface CAJsonObject : NSObject <NSFastEnumeration> {
-	
-	NSMutableDictionary* _values;
-	//@property (nonatomic, retain) NSMutableDictionary* values;
-	//@synthesize values = _values;
-	
-}
+@interface CAJsonObject : NSObject <NSFastEnumeration> {}
 
+
+
+@property (nonatomic, strong) NSMutableDictionary* values;
 
 
 +(CAJsonObject*)buildWithData:(NSData*)data;
@@ -95,6 +92,7 @@
 
 -(id)init;
 -(id)initWithCapacity:(int)numItems;
+-(instancetype)initWithValue:(NSMutableDictionary*)values;
 
 
 @end

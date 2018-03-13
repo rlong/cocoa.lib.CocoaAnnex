@@ -16,10 +16,12 @@
 
 +(CAJsonArray*)fromString:(NSString*)input;
 
-+(NSData*)toData:(CAJsonArray*)array;
-+(NSString*)toString:(CAJsonArray*)array;
+//+(NSData*)toData:(CAJsonArray*)array;
+//+(NSString*)toString:(CAJsonArray*)array;
 
-+(void)write:(CAJsonArray*)array toFile:(NSString*)path;
+//+(void)write:(CAJsonArray*)array toFile:(NSString*)path;
+
++(NSData*)toData:(CAJsonArray*)array;
 
 
 @end

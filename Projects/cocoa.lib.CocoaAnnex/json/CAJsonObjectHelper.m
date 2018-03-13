@@ -5,10 +5,8 @@
 
 #import "CABaseException.h"
 #import "CAFileUtilities.h"
-#import "CAJsonBuilder.h"
 #import "CAJsonObject.h"
 #import "CAJsonObjectHelper.h"
-#import "CAJsonReader.h"
 #import "CALog.h"
 #import "CAStringHelper.h"
 
@@ -26,16 +24,14 @@
     
     NSData* jsonData = [NSData dataWithContentsOfFile:path];
     
+    
+    
     if( nil == jsonData ) {
         Log_warnFormat(@"nil == jsonData; path = '%@'", path);
         return nil;
     }
     
-    CAJsonBuilder* builder = [[CAJsonBuilder alloc] init];
-    
-    [CAJsonReader readFromData:jsonData handler:builder];
-    
-    return [builder objectDocument];
+    return [self buildFromData:jsonData];
     
     
 }
@@ -44,12 +40,30 @@
 +(CAJsonObject*)buildFromData:(NSData*)jsonData {
     
 
-    CAJsonBuilder* builder = [[CAJsonBuilder alloc] init];
+    NSJSONReadingOptions options = NSJSONReadingMutableContainers;
     
-    [CAJsonReader readFromData:jsonData handler:builder];
+    NSError *error = nil;
+    id blob = [NSJSONSerialization
+               JSONObjectWithData:jsonData
+               options:options
+               error:&error];
     
-    return [builder objectDocument];
+    if( nil != error ) {
+        
+        
+        @throw exceptionWithMethodNameAndError(@"[NSJSONSerialization JSONObjectWithData:options:error:]", error);
+    }
     
+    if(![blob isKindOfClass:[NSMutableDictionary class]]) {
+        
+        NSString* reason = [NSString stringWithFormat:@"![object isKindOfClass:[NSMutableDictionary class]]; NSStringFromClass([blob class]) = %@", NSStringFromClass([blob class])];
+        @throw exceptionWithReason( reason );
+        
+    }
+    
+    NSMutableDictionary* mutableDictionary = (NSMutableDictionary*)blob;
+    return [[CAJsonObject alloc] initWithValue:mutableDictionary];
+
 }
 
 
@@ -82,6 +96,21 @@
     
 }
 
++(NSData*)toData:(CAJsonObject*)object;
+{
+    
+    
+    NSJSONWritingOptions options = 0;
+    NSError *error = nil;
+    
+    NSData* answer = [NSJSONSerialization dataWithJSONObject:[object values] options:options error:&error];
+    if( nil != error ) {
+        
+        @throw exceptionWithMethodNameAndError(@"[NSJSONSerialization JSONObjectWithData:options:error:]", error);
+    }
+    
+    return answer;
+}
 
 
 @end

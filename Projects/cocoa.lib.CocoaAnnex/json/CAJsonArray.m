@@ -8,9 +8,7 @@
 
 #import "CABaseException.h"
 #import "CAJsonArray.h"
-#import "CAJsonArrayHandler.h"
 #import "CAJsonObject.h"
-#import "CAJsonStringOutput.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -454,23 +452,21 @@ static NSObject* _NULL_OBJECT = nil;
 }
 
 
--(NSString*)toString { 
-	
-	NSString* answer = nil;
-	
-	
-	CAJsonStringOutput* writer = [[CAJsonStringOutput alloc] init];
-	{
-		[[CAJsonArrayHandler getInstance] writeValue:self writer:writer];
-		
-		answer = [writer toString];
-		
-	}
-	
-	return answer;
-	
+-(NSData*)toData;
+{
+    
+    
+    NSJSONWritingOptions options = 0;
+    NSError *error = nil;
+    
+    NSData* answer = [NSJSONSerialization dataWithJSONObject:[self values] options:options error:&error];
+    if( nil != error ) {
+        
+        @throw exceptionWithMethodNameAndError(@"[NSJSONSerialization JSONObjectWithData:options:error:]", error);
+    }
+    
+    return answer;
 }
-
 
 
 

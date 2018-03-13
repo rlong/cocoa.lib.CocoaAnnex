@@ -56,8 +56,8 @@
 
 -(NSString*)stringAtIndex:(NSUInteger)index;
 
+-(NSData*)toData;
 
--(NSString*)toString;
 
 #pragma mark instance lifecycle
 

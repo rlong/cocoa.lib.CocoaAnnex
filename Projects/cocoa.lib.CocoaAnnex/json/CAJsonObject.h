@@ -15,8 +15,8 @@
 @property (nonatomic, strong) NSMutableDictionary* values;
 
 
-+(CAJsonObject*)buildWithData:(NSData*)data;
-+(CAJsonObject*)buildWithString:(NSString*)jsonString;
++(CAJsonObject*)fromData:(NSData*)jsonData;
++(CAJsonObject*)fromString:(NSString*)jsonString;
 
 -(NSEnumerator*)keyEnumerator;
 -(NSArray*)allKeys;
@@ -86,6 +86,7 @@
 -(void)delete:(NSString*)key;
 
 -(NSString*)toString;
+-(NSData*)toData;
 
 
 #pragma mark instance lifecycle

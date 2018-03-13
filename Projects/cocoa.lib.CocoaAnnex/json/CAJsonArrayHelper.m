@@ -5,28 +5,45 @@
 
 
 #import "CABaseException.h"
-#import "CAJsonBuilder.h"
-#import "CAJsonArrayHandler.h"
 #import "CAJsonArrayHelper.h"
 #import "CAFileUtilities.h"
-#import "CAJsonReader.h"
-#import "CAJsonStringOutput.h"
-#import "CAJsonWalker.h"
-#import "CAJsonWriter.h"
 #import "CALog.h"
 #import "CAStringHelper.h"
 
 
 @implementation CAJsonArrayHelper
 
-static CAJsonArrayHandler* _jsonArrayHandler = nil;
 
-+(void)initialize {
-	
-    _jsonArrayHandler = [CAJsonArrayHandler getInstance];
-	
+
+
++(CAJsonArray*)buildFromData:(NSData*)jsonData {
+    
+    
+    NSJSONReadingOptions options = NSJSONReadingMutableContainers;
+    
+    NSError *error = nil;
+    id blob = [NSJSONSerialization
+               JSONObjectWithData:jsonData
+               options:options
+               error:&error];
+    
+    if( nil != error ) {
+        
+        
+        @throw exceptionWithMethodNameAndError(@"[NSJSONSerialization JSONObjectWithData:options:error:]", error);
+    }
+    
+    if(![blob isKindOfClass:[NSMutableArray class]]) {
+        
+        NSString* reason = [NSString stringWithFormat:@"![object isKindOfClass:[NSMutableArray class]]; NSStringFromClass([blob class]) = %@", NSStringFromClass([blob class])];
+        @throw exceptionWithReason( reason );
+        
+    }
+    
+    NSMutableArray* mutableArray = (NSMutableArray*)blob;
+    return [[CAJsonArray alloc] initWithValue:mutableArray];
+
 }
-
 
 
 // can return nil
@@ -42,95 +59,56 @@ static CAJsonArrayHandler* _jsonArrayHandler = nil;
         Log_warnFormat(@"nil == jsonData; path = '%@'", path);
         return nil;
     }
-    
-    CAJsonBuilder* builder = [[CAJsonBuilder alloc] init];
-    
-    [CAJsonReader readFromData:jsonData handler:builder];
-    
-    return [builder arrayDocument];
-    
+
+    return [self buildFromData:jsonData];
     
 }
 
 
 +(CAJsonArray*)fromString:(NSString*)input {
-    
-    CAJsonBuilder* builder = [[CAJsonBuilder alloc] init];
-    
-    @try {
-        
-        
-        NSData* data = [CAStringHelper toUtf8Data:input];
-        [CAJsonReader readFromData:data handler:builder];
-        
-        CAJsonArray* answer = [builder arrayDocument];
-        return  answer;
-    }
-    @finally {
-    }
+
+    NSData* data = [CAStringHelper toUtf8Data:input];
+    return [self buildFromData:data];
 }
 
 
 
-
-
-
-+(NSData*)toData:(CAJsonArray*)array {
-    
-    NSData* answer;
++(NSData*)toData:(CAJsonArray*)array;
+{
     
     
+    NSJSONWritingOptions options = 0;
+    NSError *error = nil;
     
-    CAJsonStringOutput* writer = [[CAJsonStringOutput alloc] init];
-    
-    @try {
-        [_jsonArrayHandler writeValue:array writer:writer];
-        
-        NSString* json = [writer toString];
-        
-        answer = [CAStringHelper toUtf8Data:json];
-        
-    }
-    @finally {
-    }
-    
-    return answer;
-    
-}
-
-+(NSString*)toString:(CAJsonArray*)array {
-    
-    CAJsonStringOutput* output = [[CAJsonStringOutput alloc] init];
-    
-    CAJsonWriter* writer = [[CAJsonWriter alloc] initWithOutput:output];
-    
-    [CAJsonWalker walkJsonArrayDocument:array visitor:writer];
-    NSString* answer = [output toString];
-    
-    return answer;
-
-    
-}
-
-
-+(void)write:(CAJsonArray*)array toFile:(NSString*)path {
-    
-    NSString* arrayText = [array toString];
-    
-    NSError* error = nil;
-
-    [arrayText writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
-    
+    NSData* answer = [NSJSONSerialization dataWithJSONObject:[array values] options:options error:&error];
     if( nil != error ) {
         
-        CABaseException* e = [CABaseException baseExceptionWithOriginator:self line:__LINE__ callTo:@"[NSString writeToFile:atomically:encoding:error:]" failedWithError:error];
-        [e addStringContext:path withName:@"path"];
-        @throw e;
-
-
+        @throw exceptionWithMethodNameAndError(@"[NSJSONSerialization JSONObjectWithData:options:error:]", error);
     }
     
+    return answer;
 }
+
+
+//
+//+(void)write:(CAJsonArray*)array toFile:(NSString*)path {
+//
+//    NSString* arrayText = [array toString];
+//
+//    NSError* error = nil;
+//
+//    [arrayText writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
+//
+//    if( nil != error ) {
+//
+//        CABaseException* e = [CABaseException baseExceptionWithOriginator:self line:__LINE__ callTo:@"[NSString writeToFile:atomically:encoding:error:]" failedWithError:error];
+//        [e addStringContext:path withName:@"path"];
+//        @throw e;
+//
+//
+//    }
+//
+//}
 
 
 @end

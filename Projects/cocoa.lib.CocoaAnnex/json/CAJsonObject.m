@@ -8,9 +8,6 @@
 #import "CABaseException.h"
 #import "CAJsonArray.h"
 #import "CAJsonObject.h"
-#import "CAJsonObjectHandler.h"
-#import "CAJsonDataInput.h"
-#import "CAJsonStringOutput.h"
 #import "CAStringHelper.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,28 +99,44 @@ static NSObject* _NULL_OBJECT = nil;
 
 #pragma mark -
 
-+(CAJsonObject*)buildWithData:(NSData*)data {
-	
-	CAJsonObject* answer = nil;
+
++(CAJsonObject*)fromData:(NSData*)jsonData;
+{
     
-	CAJsonDataInput* reader = [[CAJsonDataInput alloc] initWithData:data];
-	{
-		[reader scanToNextToken];
-		
-		answer = [[CAJsonObjectHandler getInstance] readJSONObject:reader];
-		
-		
-	}
-	
-	return answer;
-	
+    
+    NSJSONReadingOptions options = NSJSONReadingMutableContainers;
+    
+    NSError *error = nil;
+    id blob = [NSJSONSerialization
+               JSONObjectWithData:jsonData
+               options:options
+               error:&error];
+    
+    if( nil != error ) {
+        
+        
+        @throw exceptionWithMethodNameAndError(@"[NSJSONSerialization JSONObjectWithData:options:error:]", error);
+    }
+    
+    if(![blob isKindOfClass:[NSMutableDictionary class]]) {
+        
+        NSString* reason = [NSString stringWithFormat:@"![object isKindOfClass:[NSMutableDictionary class]]; NSStringFromClass([blob class]) = %@", NSStringFromClass([blob class])];
+        @throw exceptionWithReason( reason );
+        
+    }
+    
+    NSMutableDictionary* mutableDictionary = (NSMutableDictionary*)blob;
+    return [[CAJsonObject alloc] initWithValue:mutableDictionary];
+    
 }
 
 
-+(CAJsonObject*)buildWithString:(NSString*)jsonString {
+
++(CAJsonObject*)fromString:(NSString*)jsonString;
+{
     
     NSData* data = [CAStringHelper toUtf8Data:jsonString];
-    return [self buildWithData:data];
+    return [CAJsonObject fromData:data];
 	
 }
 
@@ -697,23 +710,28 @@ static NSObject* _NULL_OBJECT = nil;
 
 -(NSString*)toString {
 	
-	NSString* answer = nil;
-	
-	
-	//JSONWriter writer = new JSONWriter();
-	CAJsonStringOutput* writer = [[CAJsonStringOutput alloc] init];
-	{
-		//_jsonObjectHandler.writeValue( this, jsonWriter);
-		[[CAJsonObjectHandler getInstance] writeValue:self writer:writer];
-		
-		//return jsonWriter.toString();
-		answer = [writer toString];
-        
-	}
-	
-	return answer;
+    
+    return [CAStringHelper getUtf8String:[self toData]];
 	
 }
+
+-(NSData*)toData;
+{
+    
+    
+    NSJSONWritingOptions options = 0;
+    NSError *error = nil;
+    
+    NSData* answer = [NSJSONSerialization dataWithJSONObject:[self values] options:options error:&error];
+    if( nil != error ) {
+        
+        @throw exceptionWithMethodNameAndError(@"[NSJSONSerialization JSONObjectWithData:options:error:]", error);
+    }
+    
+    return answer;
+}
+
+
 
 #pragma mark -
 #pragma mark <NSFastEnumeration> implementation

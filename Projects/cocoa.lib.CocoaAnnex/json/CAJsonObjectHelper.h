@@ -20,4 +20,6 @@
 
 +(void)write:(CAJsonObject*)object toFile:(NSString*)path;
 
++(NSData*)toData:(CAJsonObject*)object;
+
 @end
